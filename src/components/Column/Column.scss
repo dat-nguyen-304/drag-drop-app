@@ -1,0 +1,57 @@
+@import '../../common.scss';
+
+.column {
+    flex: 0 0 auto;
+    width: 300px;
+
+    &:not(:first-child) {
+        margin-left: 16px;
+    }
+
+    &>* {
+        background-color: rgba($light-primary-color, .8);
+        padding: 0 8px;
+        color: $text-color;
+    }
+
+    header {
+        font-size: 16px;
+        padding-left: 15px;
+        height: $column-header-height;
+        font-weight: bold;
+        line-height: 36px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    ul.task-list {
+        list-style-type: none;
+        margin: 0;
+        max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - 20px);
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            -webkit-appearance: none;
+        }
+
+        &::-webkit-scrollbar:vertical {
+            width: 6px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: $dark-text-color;
+            border-right: 2px solid rgba($light-primary-color, .8);
+            border-radius: 4px;
+        }
+    }
+
+    footer {
+        font-size: 16px;
+        padding-left: 10px;
+        height: $column-footer-height;
+        font-weight: bold;
+        line-height: 36px;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+}

@@ -1,0 +1,10 @@
+@import '../../common.scss';
+
+.navbar-board {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    background-color: #999;
+    font-size: 1.1rem;
+    color: $text-color;
+}

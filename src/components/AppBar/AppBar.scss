@@ -1,0 +1,10 @@
+@import '../../common.scss';
+
+.navbar-app {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    background-color: $medium-primary-color;
+    font-size: 1.5rem;
+    color: $text-color;
+}
