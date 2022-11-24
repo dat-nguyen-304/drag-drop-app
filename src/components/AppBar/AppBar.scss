@@ -1,6 +1,7 @@
 @import '../../common.scss';
 
 .navbar-app {
+    height: $navbar-app-height;
     padding-left: 10px;
     display: flex;
     align-items: center;
