@@ -24,7 +24,7 @@
         border-top-right-radius: 5px;
     }
 
-    ul.task-list {
+    ul.card-list {
         list-style-type: none;
         margin: 0;
         max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - 20px);

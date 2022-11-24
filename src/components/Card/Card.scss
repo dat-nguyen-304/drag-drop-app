@@ -1,6 +1,6 @@
 @import '../../common.scss';
 
-li.task-item {
+li.card-item {
     background-color: $medium-primary-color;
     padding: 10px;
     border-radius: 4px;
@@ -12,7 +12,7 @@ li.task-item {
         margin-bottom: 10px;
     }
 
-    img {
+    img.card-cover {
         display: block;
         width: calc(100% + 20px);
         margin: -10px 0 10px -10px;
