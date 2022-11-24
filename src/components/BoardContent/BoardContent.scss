@@ -3,8 +3,16 @@
 .board-content {
     display: flex;
     overflow-x: auto;
+    overflow-y: hidden;
     padding-left: 10px;
     background-color: #999;
+    height: $board-content-height;
+
+    .column-drop-preview {
+        background-color: rgba(150, 150, 200, 0.1);
+        border: 1px dashed #abc;
+        margin: 5px 45px 5px 5px;
+    }
 
     &::-webkit-scrollbar {
         -webkit-appearance: none;

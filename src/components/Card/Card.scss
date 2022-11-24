@@ -1,16 +1,12 @@
 @import '../../common.scss';
 
-li.card-item {
+.card-item {
     background-color: $medium-primary-color;
     padding: 10px;
     border-radius: 4px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
     color: $text-color;
-
-    &:not(:last-child) {
-
-        margin-bottom: 10px;
-    }
+    cursor: pointer;
 
     img.card-cover {
         display: block;

@@ -1,12 +1,11 @@
 @import '../../common.scss';
+$column-height: calc(#{$board-content-height} - 20px);
 
 .column {
     flex: 0 0 auto;
     width: 300px;
-
-    &:not(:first-child) {
-        margin-left: 16px;
-    }
+    margin-left: 16px;
+    height: $column-height;
 
     &>* {
         background-color: rgba($light-primary-color, .8);
@@ -14,7 +13,7 @@
         color: $text-color;
     }
 
-    header {
+    header.column-drag-handle {
         font-size: 16px;
         padding-left: 15px;
         height: $column-header-height;
@@ -22,13 +21,29 @@
         line-height: 36px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+        cursor: pointer;
     }
 
-    ul.card-list {
-        list-style-type: none;
+    .card-list {
         margin: 0;
-        max-height: calc(100% - #{$column-header-height} - #{$column-footer-height} - 20px);
+        max-height: calc(#{$column-height} - #{$column-header-height} - #{$column-footer-height} - 20px);
         overflow-y: auto;
+
+        .card-ghost {
+            transition: transform 0.18s ease;
+            transform: rotateZ(5deg)
+        }
+
+        .card-ghost-drop {
+            transition: transform 0.18s ease-in-out;
+            transform: rotateZ(0deg)
+        }
+
+        .card-drop-preview {
+            background-color: rgba(150, 150, 200, 0.1);
+            border: 1px dashed #abc;
+            margin: 5px;
+        }
 
         &::-webkit-scrollbar {
             -webkit-appearance: none;
