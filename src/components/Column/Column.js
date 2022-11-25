@@ -1,17 +1,14 @@
 import React from 'react';
 import './Column.scss';
+import 'font-awesome/css/font-awesome.min.css';
 import Card from '../Card/Card';
 import { mapOrder } from '../../utilities/sorts';
 import { Container, Draggable } from 'react-smooth-dnd';
 
 
 function Column (props) {
-    const { column } = props;
+    const { column, onCardDrop } = props;
     const cards = mapOrder(column.cards, column.cardOrder, 'id');
-
-    const onCardDrop = (dropResult) => {
-        console.log(dropResult);
-    }
 
     return (
         <div className="column">
@@ -22,7 +19,7 @@ function Column (props) {
                     groupName="dat-nguyen"
                     // onDragStart={ e => console.log('drag started', e) }
                     // onDragEnd={ () => { } }
-                    onDrop={ onCardDrop }
+                    onDrop={ dropResult => onCardDrop(column, dropResult) }
                     getChildPayload={ index => cards[index] }
                     dragClass="card-ghost"
                     dropClass="card-ghost-drop"
@@ -47,7 +44,7 @@ function Column (props) {
                     )) }
                 </Container>
             </div>
-            <footer>Add another task</footer>
+            <footer><i className="fa fa-plus icon"></i>Add another task</footer>
         </div>
     )
 }
