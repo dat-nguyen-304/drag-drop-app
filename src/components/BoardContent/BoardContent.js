@@ -5,6 +5,7 @@ import { initialData } from '../../actions/initialData';
 import _ from 'lodash';
 import { mapOrder } from '../../utilities/sorts';
 import { Container, Draggable } from 'react-smooth-dnd';
+import { applyDrag } from '../../utilities/dragDrop';
 
 function BoardContent () {
     const [board, setBoard] = useState({});
@@ -23,12 +24,29 @@ function BoardContent () {
     }
 
     const onColumnDrop = (dropResult) => {
-        // const scene = Object.assign({}, this.state.scene);
-        // scene.children = applyDrag(scene.children, dropResult);
-        // this.setState({
-        //   scene
-        // });
-        console.log(dropResult);
+        // console.log('on drop content', dropResult);
+        let newColumns = [...columns];
+        console.log(newColumns);
+        newColumns = applyDrag(newColumns, dropResult);
+        let newBoard = { ...board };
+        newBoard.columnOrder = newColumns.map(c => c.id);
+        newBoard.columns = newColumns;
+        setBoard(newBoard);
+        setColumns(newColumns);
+    }
+
+    const onCardDrop = (column, dropResult) => {
+        if (dropResult.removedIndex != null || dropResult.addedIndex != null) {
+            console.log('on drop column', dropResult);
+            column.cards = applyDrag(column.cards, dropResult);
+            column.cardOrder = column.cards.map(c => c.id);
+            let newColumns = [...columns];
+            newColumns = newColumns.map(c => {
+                if (c.id === column.id) return column;
+                return c;
+            })
+            setColumns(newColumns);
+        }
     }
 
     return (
@@ -36,8 +54,7 @@ function BoardContent () {
             <Container
                 orientation="horizontal"
                 onDrop={ onColumnDrop }
-                getChildPayload={ index => columns[index]
-                }
+                getChildPayload={ index => columns[index] }
                 dragHandleSelector=".column-drag-handle"
                 dropPlaceholder={ {
                     animationDuration: 150,
@@ -48,10 +65,13 @@ function BoardContent () {
 
                 { columns.map((column, index) => (
                     <Draggable key={ index }>
-                        <Column key={ index } column={ column } />
+                        <Column key={ index } column={ column } onCardDrop={ onCardDrop } />
                     </Draggable>
                 )) }
             </Container>
+            <div className="add-new-column">
+                <i className="fa fa-plus icon"></i>Add new column
+            </div>
         </div>
     )
 }
