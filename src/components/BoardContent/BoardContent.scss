@@ -8,6 +8,11 @@
     background-color: #999;
     height: $board-content-height;
 
+    &::after {
+        content: "";
+        flex: 0 0 10px;
+    }
+
     .column-drop-preview {
         background-color: rgba(150, 150, 200, 0.1);
         border: 1px dashed #abc;
@@ -29,7 +34,36 @@
 
         &:hover {
             color: $dark-text-color;
-            font-weight: 700;
+        }
+    }
+
+    .new-column-name-input-container {
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        border-radius: 4px;
+        margin-left: 16px;
+        line-height: 48px;
+        padding: 8px 15px;
+        width: 300px;
+        color: $text-color;
+        background-color: #fff;
+        cursor: pointer;
+
+        .new-column-name-action {
+            display: flex;
+            align-items: center;
+            margin-top: 12px;
+
+            .new-column-name-input {
+                outline: none;
+                border: none;
+                box-shadow: none;
+            }
+
+            .cancel-add-column {
+                margin-left: 20px;
+                font-size: 28px;
+            }
         }
     }
 
