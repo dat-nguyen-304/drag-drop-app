@@ -16,12 +16,58 @@ $column-height: calc(#{$board-content-height} - 20px);
     header.column-drag-handle {
         font-size: 16px;
         padding-left: 15px;
+        padding-top: 14px;
         height: $column-header-height;
         font-weight: bold;
         line-height: 36px;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         cursor: pointer;
+
+        .column-header-container {
+            display: flex;
+
+            .column-name-input-editable {
+                background-color: inherit;
+                border: none;
+                color: $text-color;
+                font-weight: 500;
+                font-size: 16px;
+                padding: 0;
+                display: block;
+                height: 24px;
+                line-height: 24px;
+
+                &:focus {
+                    outline: none;
+                    border: none;
+                    box-shadow: none;
+                    background-color: #fff;
+                    color: #333;
+                    padding: 0 4px;
+                }
+            }
+
+            .dropdown {
+                .column-header-menu {
+                    background-color: transparent;
+                    border: none;
+
+                    &::after {
+                        content: '...';
+                        border: none;
+                        font-size: 20px;
+                        position: relative;
+                        top: -4px;
+                    }
+                }
+
+                .dropdown-menu {
+                    padding: 0;
+                    overflow: hidden;
+                }
+            }
+        }
     }
 
     .card-list {
@@ -62,17 +108,27 @@ $column-height: calc(#{$board-content-height} - 20px);
     }
 
     footer {
-        padding-bottom: 4px;
         font-size: 16px;
-        padding-left: 10px;
-        height: $column-footer-height;
-        line-height: 36px;
+        padding: 12px 10px;
         border-bottom-left-radius: 5px;
         border-bottom-right-radius: 5px;
 
-        &:hover {
-            color: $dark-text-color;
+
+        .add-new-task-container {
             cursor: pointer;
+            border: 1px solid #000;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: #666;
+            color: #fff;
+
+            &:hover {
+                color: $dark-text-color;
+                cursor: pointer;
+                background-color: $light-primary-color;
+                color: #fff;
+            }
         }
+
     }
 }

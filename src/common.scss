@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600');
+@import "~bootstrap/scss/bootstrap";
+
 $navbar-app-height: 5vh;
 $navbar-board-height: 6vh;
 $board-content-height: 89vh;
@@ -12,5 +14,5 @@ $white-color: #fff;
 $black-color: #000;
 $text-color: #64ffda;
 $dark-text-color: #009773;
-$column-header-height: 36px;
+$column-header-height: 60px;
 $column-footer-height: 36px;
