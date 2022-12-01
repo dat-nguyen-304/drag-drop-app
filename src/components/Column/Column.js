@@ -3,17 +3,29 @@ import './Column.scss';
 import 'font-awesome/css/font-awesome.min.css';
 import Card from '../Card/Card';
 import ConfirmModal from '../Common/ConfirmModal';
-import { Dropdown, Form } from 'react-bootstrap';
+import { Dropdown, Form, Button } from 'react-bootstrap';
 import { mapOrder } from '../../utilities/sorts';
 import { Container, Draggable } from 'react-smooth-dnd';
 
 function Column (props) {
-    const { column, onCardDrop, saveColumnTitle, removeColumn } = props;
+    const { column, onCardDrop, saveColumnTitle, removeColumn, addNewCard } = props;
     const [columnTitle, setColumnTitle] = useState('');
+    const [newCardContent, setNewCardContent] = useState('');
+
     const [modalConfirm, setModalConfirm] = useState(false);
+    const toggleConfirmModal = () => {
+        setModalConfirm(!modalConfirm);
+    };
+
+    const [openAddNewCard, setOpenAddNewCard] = useState(false);
+    const toggleOpenAddNewCard = () => {
+        setOpenAddNewCard(!openAddNewCard);
+        console.log(addNewCardArea.current);
+    };
+
     const cards = mapOrder(column.cards, column.cardOrder, 'id');
     let changeTitleInput = useRef();
-
+    let addNewCardArea = useRef();
     const changeTitleColumn = (e) => {
         setColumnTitle(e.target.value);
     }
@@ -21,6 +33,13 @@ function Column (props) {
     useEffect(() => {
         setColumnTitle(column.title);
     }, [column.title])
+
+    useEffect(() => {
+        if (openAddNewCard) {
+            if (addNewCardArea.current)
+                addNewCardArea.current.focus();
+        }
+    }, [openAddNewCard])
 
     const saveColumnByPressEnter = (e) => {
         if (columnTitle) {
@@ -55,13 +74,15 @@ function Column (props) {
         changeTitleInput.current.setSelectionRange(end, end);
     }
 
-    const toggleConfirmModal = () => {
-        setModalConfirm(!modalConfirm);
-    }
-
     const handleRemoveColumn = () => {
         removeColumn(column.id);
         toggleConfirmModal();
+    }
+
+    const handleAddNewCard = () => {
+        addNewCard(column, newCardContent);
+        toggleOpenAddNewCard();
+        setNewCardContent('');
     }
 
     return (
@@ -128,12 +149,32 @@ function Column (props) {
                             <Card key={ card.id } card={ card } />
                         </Draggable>
                     )) }
+                    { openAddNewCard &&
+                        <Form.Control
+                            className="new-task-area" size="sm" as="textarea"
+                            placeholder="Column name..."
+                            value={ newCardContent }
+                            ref={ addNewCardArea }
+                            onChange={ e => { setNewCardContent(e.target.value) } }
+                        />
+                    }
                 </Container>
             </div>
             <footer>
-                <div className="add-new-task-container">
-                    <i className="fa fa-plus icon"></i><span>Add another task</span>
-                </div>
+                { !openAddNewCard ?
+                    <div className="open-add-new-card-button" onClick={ toggleOpenAddNewCard }>
+                        <i className="fa fa-plus icon"></i><span>Add another task</span>
+                    </div>
+                    :
+                    <div className="add-new-card-action">
+                        <Button variant="success" size="sm"
+                            onClick={ handleAddNewCard }
+                        >
+                            Add task
+                        </Button>
+                        <i className="fa fa-trash cancel-icon" onClick={ toggleOpenAddNewCard }></i>
+                    </div>
+                }
             </footer>
         </div >
     )

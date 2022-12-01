@@ -116,6 +116,30 @@ function BoardContent () {
         setColumns(newColumns);
     }
 
+    const addNewCard = (column, cardContent) => {
+        const newCard = {
+            id: Math.floor(Math.random() * 1000),
+            columnId: column.id,
+            boardId: column.boardId,
+            cover: null,
+            title: cardContent
+        }
+
+        const newColumn = { ...column, cards: [...column.cards, newCard], cardOrder: [...column.cardOrder, newCard.id] }
+        let newColumns = [...columns];
+        newColumns = newColumns.map(c => {
+            if (c.id === column.id)
+                return newColumn;
+            return c;
+        })
+        console.log(newColumns);
+
+        let newBoard = { ...board };
+        newBoard.columns = newColumns;
+        setBoard(newBoard);
+        setColumns(newColumns);
+    }
+
     return (
         <div className="board-content">
             <Container
@@ -138,6 +162,7 @@ function BoardContent () {
                             onCardDrop={ onCardDrop }
                             saveColumnTitle={ saveColumnTitle }
                             removeColumn={ removeColumn }
+                            addNewCard={ addNewCard }
                         />
                     </Draggable>
                 )) }
@@ -167,7 +192,7 @@ function BoardContent () {
                                     >
                                         Add column
                                     </Button>
-                                    <i className="fa fa-trash cancel-add-column" onClick={ toggleOpenAddNewColumn }></i>
+                                    <i className="fa fa-trash cancel-icon" onClick={ toggleOpenAddNewColumn }></i>
                                 </div>
                             </Col>
                         </Row>

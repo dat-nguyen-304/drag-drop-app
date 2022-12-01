@@ -12,7 +12,7 @@ function Card (props) {
                     onMouseDown={ e => e.preventDefault() }
                 />
             }
-            Title Dat Nguyen
+            { card.title }
         </div>
 
     )
