@@ -6,6 +6,7 @@ import ConfirmModal from '../Common/ConfirmModal';
 import { Dropdown, Form, Button } from 'react-bootstrap';
 import { mapOrder } from '../../utilities/sorts';
 import { Container, Draggable } from 'react-smooth-dnd';
+import { updateColumn } from '../../actions/APICall/index';
 
 function Column (props) {
     const { column, onCardDrop, saveColumnTitle, removeColumn, addNewCard } = props;
@@ -23,7 +24,7 @@ function Column (props) {
         console.log(addNewCardArea.current);
     };
 
-    const cards = mapOrder(column.cards, column.cardOrder, 'id');
+    const cards = mapOrder(column.cards, column.cardOrder, '_id');
     let changeTitleInput = useRef();
     let addNewCardArea = useRef();
     const changeTitleColumn = (e) => {
@@ -45,10 +46,15 @@ function Column (props) {
         if (columnTitle) {
             if (e.key === 'Enter') {
                 e.target.blur();
-                saveColumnTitle({
-                    ...column,
-                    title: columnTitle
-                })
+                if (columnTitle !== column.title) {
+                    const newColumn = {
+                        ...column,
+                        title: columnTitle
+                    }
+                    updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+                        saveColumnTitle(newColumn);
+                    })
+                }
             }
         } else {
             e.target.blur();
@@ -57,10 +63,13 @@ function Column (props) {
     }
 
     const saveColumnByBlur = () => {
-        if (columnTitle) {
-            saveColumnTitle({
+        if (columnTitle && columnTitle !== column.title) {
+            const newColumn = {
                 ...column,
                 title: columnTitle
+            }
+            updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+                saveColumnTitle(newColumn);
             })
         } else setColumnTitle(column.title);
     }
@@ -75,7 +84,7 @@ function Column (props) {
     }
 
     const handleRemoveColumn = () => {
-        removeColumn(column.id);
+        removeColumn(column);
         toggleConfirmModal();
     }
 
@@ -131,10 +140,10 @@ function Column (props) {
                     dragClass="card-ghost"
                     dropClass="card-ghost-drop"
                     // onDragEnter={ () => {
-                    //     console.log('drag enter:', column.id);
+                    //     console.log('drag enter:', column._id);
                     // } }
                     // onDragLeave={ () => {
-                    //     console.log('drag leave:', column.id);
+                    //     console.log('drag leave:', column._id);
                     // } }
                     // onDropReady={ p => console.log('Drop ready: ', p) }
                     dropPlaceholder={ {
@@ -145,8 +154,8 @@ function Column (props) {
                     dropPlaceholderAnimationDuration={ 200 }
                 >
                     { cards.map((card, index) => (
-                        <Draggable key={ card.id }>
-                            <Card key={ card.id } card={ card } />
+                        <Draggable key={ card._id }>
+                            <Card key={ card._id } card={ card } />
                         </Draggable>
                     )) }
                     { openAddNewCard &&
