@@ -45,15 +45,6 @@ function Column (props) {
     const saveColumnByPressEnter = (e) => {
         if (e.key === 'Enter') {
             e.target.blur();
-            if (columnTitle !== column.title) {
-                const newColumn = {
-                    ...column,
-                    title: columnTitle
-                }
-                updateColumn(newColumn._id, newColumn).then(updatedColumn => {
-                    saveColumnTitle(newColumn);
-                })
-            }
         }
     }
 
@@ -109,9 +100,9 @@ function Column (props) {
                         <Dropdown.Toggle className="column-header-menu" />
 
                         <Dropdown.Menu>
-                            <Dropdown.Item onClick={ toggleConfirmModal }>Delete Column</Dropdown.Item>
+                            <Dropdown.Item onClick={ handleAddNewCard }>Add card</Dropdown.Item>
                             <Dropdown.Item onClick={ () => changeTitleInput.current.focus() }>Rename</Dropdown.Item>
-                            <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+                            <Dropdown.Item onClick={ toggleConfirmModal }>Delete Column</Dropdown.Item>
                         </Dropdown.Menu>
                         <ConfirmModal
                             showModal={ modalConfirm }
