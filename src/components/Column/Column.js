@@ -43,27 +43,22 @@ function Column (props) {
     }, [openAddNewCard])
 
     const saveColumnByPressEnter = (e) => {
-        if (columnTitle) {
-            if (e.key === 'Enter') {
-                e.target.blur();
-                if (columnTitle !== column.title) {
-                    const newColumn = {
-                        ...column,
-                        title: columnTitle
-                    }
-                    updateColumn(newColumn._id, newColumn).then(updatedColumn => {
-                        saveColumnTitle(newColumn);
-                    })
-                }
-            }
-        } else {
+        if (e.key === 'Enter') {
             e.target.blur();
-            setColumnTitle(column.title);
+            if (columnTitle !== column.title) {
+                const newColumn = {
+                    ...column,
+                    title: columnTitle
+                }
+                updateColumn(newColumn._id, newColumn).then(updatedColumn => {
+                    saveColumnTitle(newColumn);
+                })
+            }
         }
     }
 
     const saveColumnByBlur = () => {
-        if (columnTitle && columnTitle !== column.title) {
+        if (columnTitle !== column.title) {
             const newColumn = {
                 ...column,
                 title: columnTitle
@@ -71,7 +66,7 @@ function Column (props) {
             updateColumn(newColumn._id, newColumn).then(updatedColumn => {
                 saveColumnTitle(newColumn);
             })
-        } else setColumnTitle(column.title);
+        }
     }
 
     const handleClick = (e) => {
@@ -133,19 +128,10 @@ function Column (props) {
                 <Container
                     orientation="vertical"
                     groupName="dat-nguyen"
-                    // onDragStart={ e => console.log('drag started', e) }
-                    // onDragEnd={ () => { } }
                     onDrop={ dropResult => onCardDrop(column, dropResult) }
                     getChildPayload={ index => cards[index] }
                     dragClass="card-ghost"
                     dropClass="card-ghost-drop"
-                    // onDragEnter={ () => {
-                    //     console.log('drag enter:', column._id);
-                    // } }
-                    // onDragLeave={ () => {
-                    //     console.log('drag leave:', column._id);
-                    // } }
-                    // onDropReady={ p => console.log('Drop ready: ', p) }
                     dropPlaceholder={ {
                         animationDuration: 150,
                         showOnTop: true,

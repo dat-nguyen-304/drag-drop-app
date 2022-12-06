@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Column from '../Column/Column';
 import './BoardContent.scss';
-import { initialData } from '../../actions/initialData';
 import _ from 'lodash';
 import { mapOrder } from '../../utilities/sorts';
 import { Container, Draggable } from 'react-smooth-dnd';
 import { Container as BootstrapContainer, Row, Col, Form, Button } from 'react-bootstrap';
 import { applyDrag } from '../../utilities/dragDrop';
-import { fetchBoardDetails, createNewColumn, createNewCard, updateColumn } from '../../actions/APICall';
+import {
+    fetchBoardDetails,
+    createNewColumn,
+    createNewCard,
+    updateBoard,
+    updateColumn,
+    updateCard
+} from '../../actions/APICall';
 
 function BoardContent () {
     const [board, setBoard] = useState({});
@@ -39,30 +45,53 @@ function BoardContent () {
 
     const onColumnDrop = (dropResult) => {
         console.log('on drop column', dropResult);
-        let newColumns = [...columns];
-        // console.log(newColumns);
-        newColumns = applyDrag(newColumns, dropResult);
-        let newBoard = { ...board };
-        newBoard.columnOrder = newColumns.map(c => c._id);
-        newBoard.columns = newColumns;
-        setBoard(newBoard);
-        setColumns(newColumns);
+        if (dropResult.removedIndex !== dropResult.addedIndex) {
+            let newColumns = _.cloneDeep(columns);
+
+            newColumns = applyDrag(newColumns, dropResult);
+            let newBoard = _.cloneDeep(board);
+            newBoard.columnOrder = newColumns.map(c => c._id);
+            newBoard.columns = newColumns;
+
+            setBoard(newBoard);
+            setColumns(newColumns);
+            updateBoard(newBoard._id, newBoard).catch(e => {
+                console.log(e.message);
+                setBoard(board);
+                setColumns(columns);
+            });
+        }
     }
 
     const onCardDrop = (column, dropResult) => {
         if (dropResult.removedIndex != null || dropResult.addedIndex != null) {
             console.log('on drop card', dropResult);
-            column.cards = applyDrag(column.cards, dropResult);
-            column.cardOrder = column.cards.map(c => c._id);
-            let newColumns = [...columns];
-            newColumns = newColumns.map(c => {
-                if (c._id === column._id) return column;
-                return c;
-            })
-            let newBoard = { ...board };
-            newBoard.columns = newColumns;
-            setBoard(newBoard);
-            setColumns(newColumns);
+            const newColumn = _.cloneDeep(column);
+            newColumn.cards = applyDrag(newColumn.cards, dropResult);
+            newColumn.cardOrder = newColumn.cards.map(c => c._id);
+            setColumns(columns => {
+                let newColumns = _.cloneDeep(columns);
+                newColumns = newColumns.map(c => {
+                    if (c._id === newColumn._id) { return newColumn; }
+                    return c;
+                })
+                let newBoard = _.cloneDeep(board);
+                newBoard.columns = newColumns;
+                setBoard(newBoard);
+                return newColumns;
+            });
+
+            if (dropResult.removedIndex != null && dropResult.addedIndex != null) {
+                if (dropResult.removedIndex !== dropResult.addedIndex)
+                    updateColumn(newColumn._id, newColumn).catch(e => { setColumns(columns); console.log('something is wrong', e.message); });
+            } else {
+                updateColumn(newColumn._id, newColumn).catch(e => { setColumns(columns); console.log('something is wrong', e.message); });
+                if (dropResult.addedIndex !== null) {
+                    const currentCard = _.cloneDeep(dropResult.payload);
+                    currentCard.columnId = newColumn._id;
+                    updateCard(currentCard._id, currentCard);
+                }
+            }
         }
     }
 
