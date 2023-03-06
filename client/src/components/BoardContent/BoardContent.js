@@ -94,6 +94,37 @@ function BoardContent () {
             }
         }
     }
+    // const onCardDrop = (column, dropResult) => {
+    //     if (dropResult.removedIndex != null || dropResult.addedIndex != null) {
+    //         console.log('on drop card', dropResult);
+    //         const newColumn = { ...column };
+    //         newColumn.cards = applyDrag(newColumn.cards, dropResult);
+    //         newColumn.cardOrder = newColumn.cards.map(c => c._id);
+    //         let newColumns = _.cloneDeep(columns);
+    //         console.log('before columns: ', newColumns);
+    //         newColumns = newColumns.map(c => {
+    //             if (c._id === newColumn._id) { return newColumn; }
+    //             return c;
+    //         })
+    //         console.log('after columns: ', newColumns);
+    //         let newBoard = _.cloneDeep(board);
+    //         newBoard.columns = newColumns;
+    //         setColumns(newColumns);
+    //         setBoard(newBoard);
+
+    //         if (dropResult.removedIndex != null && dropResult.addedIndex != null) {
+    //             if (dropResult.removedIndex !== dropResult.addedIndex)
+    //                 updateColumn(newColumn._id, newColumn).catch(e => { setColumns(columns); console.log('something is wrong', e.message); });
+    //         } else {
+    //             updateColumn(newColumn._id, newColumn).catch(e => { setColumns(columns); console.log('something is wrong', e.message); });
+    //             if (dropResult.addedIndex !== null) {
+    //                 const currentCard = _.cloneDeep(dropResult.payload);
+    //                 currentCard.columnId = newColumn._id;
+    //                 updateCard(currentCard._id, currentCard);
+    //             }
+    //         }
+    //     }
+    // }
 
     const toggleOpenAddNewColumn = () => {
         setOpenAddNewColumn(!openAddNewColumn);
